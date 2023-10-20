@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.com.fiap.cafe.model.Cafe;
 import br.com.fiap.cafe.model.repository.CafeRepository;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -33,7 +34,7 @@ public class CafeResource {
 	@POST
 	//@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response salva (Cafe cafe) {
+	public Response salva (@Valid Cafe cafe) {
 		
 		Cafe resp = CafeRepository.salva(cafe);
 		
