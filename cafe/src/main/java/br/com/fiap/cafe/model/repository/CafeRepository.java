@@ -84,4 +84,75 @@ public class CafeRepository extends Repository {
 		return null;
 	}
 
+	@SuppressWarnings("unused")
+	public static boolean delete(Long cafeId) {
+
+		Cafe cafe = null;
+		String sql = "delete from cafe where id = ?";
+		PreparedStatement ps = null;
+		cafe = findById(cafeId);
+
+		if (cafe == null) {
+			return false;
+
+		}
+
+		try {
+			ps = getConnection().prepareStatement(sql);
+			ps.setLong(1, cafeId);
+			ps.executeUpdate();
+
+			return true;
+
+		} catch (SQLException e) {
+			System.out.println("erro pra deletar no banco" + e.getMessage());
+
+		} finally {
+			if (ps != null)
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+
+		return false;
+	}
+
+	public static Cafe findById(Long id) {
+		String sql = "select * from cafe where id = ?";
+
+		PreparedStatement ps = null;
+
+		ResultSet rs = null;
+
+		try {
+			ps = getConnection().prepareStatement(sql);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		finally 
+				{
+			if (ps != null)
+				try {
+					ps.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			if (rs != null)
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		}
+
+	}
+
 }

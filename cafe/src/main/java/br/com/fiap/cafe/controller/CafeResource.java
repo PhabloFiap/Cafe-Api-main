@@ -7,9 +7,11 @@ import br.com.fiap.cafe.model.Cafe;
 import br.com.fiap.cafe.model.repository.CafeRepository;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -44,6 +46,22 @@ public class CafeResource {
 		ResponseBuilder response = Response.created(cafeUri);
 		response.entity(resp);
 		return response.build();
+		
+	}
+	
+	
+	@DELETE
+	public Response delete (@PathParam("id") Long cafeId ) {
+		
+		 if (CafeRepository.delete(cafeId)) {
+			 ResponseBuilder response = Response.noContent();
+			 return response.build();
+			 
+		 }else {
+			 System.out.println("nao foi possivel remover");
+		 }
+		;
+		
 		
 	}
 	
