@@ -84,7 +84,7 @@ public class CafeRepository extends Repository {
 		return null;
 	}
 
-	@SuppressWarnings("unused")
+	
 	public static boolean delete(Long cafeId) {
 
 		Cafe cafe = null;
@@ -129,6 +129,26 @@ public class CafeRepository extends Repository {
 
 		try {
 			ps = getConnection().prepareStatement(sql);
+			ps.setLong(1, id);
+			
+			rs = ps.executeQuery();
+			
+			if (rs.isBeforeFirst()) {
+				
+				Cafe cafe = new Cafe();
+				
+				while(rs.next()) {
+					
+					cafe.setId(rs.getLong("ID"));
+					cafe.setNome(rs.getString("nome"));
+					cafe.setPreco(rs.getDouble("preco"));
+					cafe.setDataFabricacao(rs.getDate("dataFabricacao").toLocalDate());
+					cafe.setDataValidade(rs.getDate("dataValidade").toLocalDate());
+
+				}
+				return cafe;
+			}
+			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -152,6 +172,7 @@ public class CafeRepository extends Repository {
 				}
 				
 		}
+		return null;
 
 	}
 
