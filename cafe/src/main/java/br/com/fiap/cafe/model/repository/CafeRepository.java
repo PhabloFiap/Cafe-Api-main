@@ -188,7 +188,6 @@ public class CafeRepository extends Repository {
 				cs.setDate(4, Date.valueOf(cafe.getDataValidade()));
 				cs.setLong(5, cafe.getId());
 				
-				//cs.registerOutParameter(6, java.sql.Types.INTEGER);
 				cs.executeUpdate();
 				
 				return cafe;
