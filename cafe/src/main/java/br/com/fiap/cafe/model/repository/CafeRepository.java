@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.fiap.cafe.model.Cafe;
+import jakarta.validation.Valid;
 
 public class CafeRepository extends Repository {
 
@@ -174,6 +175,44 @@ public class CafeRepository extends Repository {
 		}
 		return null;
 
+	}
+
+	public static Cafe atualiza(@Valid Cafe cafe) {
+			String sql = "update cafe set nome=?, preco=?, dataFabricacao=?, dataValidade=? where id =?";
+			CallableStatement cs = null;
+			try {
+				cs = getConnection().prepareCall(sql);
+				cs.setString(1, cafe.getNome());
+				cs.setDouble(2, cafe.getPreco());
+				cs.setDate(3, Date.valueOf(cafe.getDataFabricacao()));
+				cs.setDate(4, Date.valueOf(cafe.getDataValidade()));
+				cs.setLong(5, cafe.getId());
+				
+				//cs.registerOutParameter(6, java.sql.Types.INTEGER);
+				cs.executeUpdate();
+				
+				return cafe;
+				
+				
+				
+				
+			} catch (SQLException e) {
+
+				System.out.println("Erro ao atualizar o bd" +e.getMessage());
+			}
+			
+			finally {
+				if (cs != null)
+					try {
+						cs.close();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}
+			
+		
+		return null;
 	}
 
 }

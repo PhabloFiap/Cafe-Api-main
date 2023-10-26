@@ -10,6 +10,7 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
@@ -63,24 +64,42 @@ public class CafeResource {
 		}
 
 	}
-	
+
+	@PUT
+	@Path("/{id}")
+	public Response atualiza(@PathParam("id") Long cafeId,  @Valid Cafe cafe) {
+
+		Cafe velho = CafeRepository.findById(cafeId);
+		Cafe novo = null;
+		if (velho == null || velho.getId() != cafe.getId()) {
+			novo = CafeRepository.salva(cafe);
+
+			final URI cafeUri = UriBuilder.fromResource(CafeResource.class).path("/cafe/{id}").build(novo.getId());
+
+			ResponseBuilder response = Response.created(cafeUri);
+			response.entity(novo);
+			return response.build();
+
+		}
+
+		novo = CafeRepository.atualiza(cafe);
+		return Response.ok(novo).build();
+
+	}
+
 	@GET
 	@Path("/{id}")
 	public Response findById(@PathParam("id") Long cafeId) {
 		Cafe cafe = CafeRepository.findById(cafeId);
-			if(cafe != null) {
-				ResponseBuilder response = Response.ok();
-				response.entity(cafe);
-				return response.build();
-				
-			}
-			else {
-				ResponseBuilder response = Response.noContent();
-				return response.build();
-			}
+		if (cafe != null) {
+			ResponseBuilder response = Response.ok();
+			response.entity(cafe);
+			return response.build();
+
+		} else {
+			ResponseBuilder response = Response.noContent();
+			return response.build();
+		}
 	}
-	
-	
-	
 
 }
